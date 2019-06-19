@@ -16,7 +16,7 @@ using namespace std;
 #pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
 #pragma GCC optimize("unroll-loops")
 
-int it = 0, n;
+int it = 0, n, m;
 vector<vector<int> > jij;
 
 void print(vector<vector<int> > a){
@@ -30,7 +30,7 @@ void print(vector<vector<int> > a){
 }
 
 vector<vector<int> > solve(vector<vector<int> > a){
-    //print(a);
+    print(a);
     it++;
     for(int i = 0; i<n; i++){
         for(int j = 0; j<n; j++){
@@ -42,7 +42,7 @@ vector<vector<int> > solve(vector<vector<int> > a){
                     return jij;
                 if(a[i][j]==a[y][j]&&i!=y)
                     return jij;
-                int x = (i/3)*3+(y/3), h = (j/3)*3+y%3;
+                int x = (i/m)*m+(y/m), h = (j/m)*m+y%m;
                 //if(it==1)
                     //cout << i << ':' << j << ' ' << x << ':' << h << endl;
                 if(a[i][j]==a[x][h]&&!(x==i&&h==j))
@@ -54,7 +54,7 @@ vector<vector<int> > solve(vector<vector<int> > a){
         for(int j = 0; j<n; j++){
             if(a[i][j]!=0)
                 continue;
-            for(int y = 1; y<10; y++){
+            for(int y = 1; y<=n; y++){
                 a[i][j] = y;
                 vector<vector<int> > kek = solve(a);
                 if(kek!=jij)
@@ -66,41 +66,48 @@ vector<vector<int> > solve(vector<vector<int> > a){
     return a;
 }
 
+string gensep(){
+    string ans = "+ ";
+    for(int i = 0; i<n; i++){
+        for(int j = 0; j<n; j++){
+            ans.push_back('-');
+            ans.push_back(' ');
+        }
+        ans.push_back('+');
+        ans.push_back(' ');
+    }
+    return ans;
+}
+
 int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
     cin >> n;
+    string sep = gensep();
+    m = n;
     n = n*n;
     vector<vector<int> > a(n, vector<int>(n));
     for(int i = 0; i<n; i++)
         for(int j = 0; j<n; j++)
             cin >> a[i][j];
     a = solve(a);
+    if(a==jij){
+        cout << "No solution";
+        return 0;
+    }
     cout << "Solved in " << it << " iterations" << endl;
     for(int i = 0; i<n; i++){
-        if(i%3==0)
-            cout << "+ - - - + - - - + - - - +" << endl;
+        if(i%m==0)
+            cout << sep << endl;
         for(int j = 0; j<n; j++){
-            if(j%3==0)
+            if(j%m==0)
                 cout << "| ";
             cout << a[i][j] << ' ';
         }
         cout << '|' << endl;
     }
-    cout << "+ - - - + - - - + - - - +" << endl;
+    cout << sep << endl;
 
     return 0;
 }
-/*
-3
-8 0 0 0 0 0 0 0 0
-0 0 3 6 0 0 0 0 0
-0 7 0 0 9 0 2 0 0
-0 5 0 0 0 7 0 0 0
-0 0 0 0 4 5 7 0 0
-0 0 0 1 0 0 0 3 0
-0 0 1 0 0 0 0 6 8
-0 0 8 5 0 0 0 1 0
-0 9 0 0 0 0 4 0 0
-*/
