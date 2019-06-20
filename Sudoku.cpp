@@ -12,7 +12,6 @@
 using namespace std;
 
 #pragma comment(linker, "/stack:200000000")
-//#pragma GCC optimize("Ofast,no-stack-protector")
 #pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
 #pragma GCC optimize("unroll-loops")
 
@@ -30,12 +29,10 @@ void print(vector<vector<int> > a){
 }
 
 vector<vector<int> > solve(vector<vector<int> > a){
-    print(a);
     it++;
     for(int i = 0; i<n; i++){
         for(int j = 0; j<n; j++){
             for(int y = 0; y<n; y++){
-                //cout << i << ':' << j << ' ' << y << endl;
                 if(a[i][j]==0)
                     continue;
                 if(a[i][j]==a[i][y]&&j!=y)
@@ -43,8 +40,6 @@ vector<vector<int> > solve(vector<vector<int> > a){
                 if(a[i][j]==a[y][j]&&i!=y)
                     return jij;
                 int x = (i/m)*m+(y/m), h = (j/m)*m+y%m;
-                //if(it==1)
-                    //cout << i << ':' << j << ' ' << x << ':' << h << endl;
                 if(a[i][j]==a[x][h]&&!(x==i&&h==j))
                     return jij;
             }
